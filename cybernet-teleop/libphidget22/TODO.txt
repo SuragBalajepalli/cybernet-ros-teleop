@@ -1,0 +1,2 @@
+TODO:
+1. On compilation, phidget22.h gets created without a neccessary header file : #include <stdlib.h> . Figure out how to fix this.
