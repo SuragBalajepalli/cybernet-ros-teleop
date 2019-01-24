@@ -1,0 +1,4 @@
+uint8 SET_ZERO=1
+uint8 RESET=2
+---
+bool success
