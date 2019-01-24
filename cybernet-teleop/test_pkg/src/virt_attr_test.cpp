@@ -13,8 +13,7 @@ sensor_msgs::JointState prev_enc_vals;
 bool reset_mode = false, init = true; //For future use of moving the hand controller without changing vals
 double RATE = 100, JNT0_MM_PER_TICK = 1, JNT1_MM_PER_TICK = 1, JNT2_MM_PER_TICK = 1;
 
-bool accessorCB(test_pkg::virt_attr_serviceRequest& request, test_pkg::virt_attr_serviceResponse& response) {
-	
+bool setZeroCb(test_pkg::virt_attr_serviceRequest& request, test_pkg::virt_attr_serviceResponse& response) {
 	ROS_INFO("Command to set to zero recieved");
 	virt_attr_pose.pose.position.x = 0.0;
 	virt_attr_pose.pose.position.y = 0.0;
@@ -50,7 +49,7 @@ int main(int argc, char** argv) {
 	ros::NodeHandle nh;
 	ros::Publisher virt_attr_pub = nh.advertise<geometry_msgs::PoseStamped>("Virt_attr_3dof",1);
 	ros::Subscriber encoder_sub = nh.subscribe("/joint_states",1, encoderCb); //Will remap topic in the future, fix this then
-	ros::ServiceServer zero_service = nh.advertiseService("v_attr_accessor", accessorCB);
+	ros::ServiceServer zero_service = nh.advertiseService("set_v_attr_zero", setZeroCb);
 	ros::Rate naptime(RATE);
 
 	if(!nh.getParam("/joint0/mm_per_tick", JNT0_MM_PER_TICK)) {
