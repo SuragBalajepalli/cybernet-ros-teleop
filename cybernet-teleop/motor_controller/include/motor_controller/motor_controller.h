@@ -9,8 +9,9 @@
 
 class MotorController {
 public:
-	MotorController();
+	
 	MotorController(ros::NodeHandle& nh);
+	~MotorController();
 	//main function to be used:
 	bool setVoltage(int motor_index,double voltage);
 	//accessors for sn and channels and others

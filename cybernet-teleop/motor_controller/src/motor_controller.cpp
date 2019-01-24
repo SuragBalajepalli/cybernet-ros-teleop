@@ -23,8 +23,17 @@ MotorController::MotorController(ros::NodeHandle& nh) {
 	
 }
 
+MotorController::~MotorController() {
+
+		for(int itr = 0; itr < 6; itr++) Phidget_close((PhidgetHandle)Vout_handles[itr]);
+		for(int itr = 0; itr < 6; itr++) PhidgetVoltageOutput_delete(&Vout_handles[itr]);
+
+}
+
 bool MotorController::setVoltage(int motor_index, double voltage) {
 	prc = PhidgetVoltageOutput_setVoltage(Vout_handles[motor_index],voltage);
 	if(!prc) ROS_INFO("Error setting voltage to motor: %i", motor_index);
 
 }
+
+

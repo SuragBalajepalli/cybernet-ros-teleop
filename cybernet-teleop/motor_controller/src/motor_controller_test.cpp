@@ -5,7 +5,7 @@ int main(int argc, char** argv) {
 	ros::NodeHandle nh;
 	MotorController motorcontroller(nh);
 	while(ros::ok()) {
-		ROS_INFO("Setting motor 1 voltage = 0.2");
+		//ROS_INFO("Setting motor 1 voltage = 0.2");
 		motorcontroller.setVoltage(0,0.2);
 	}
 	return 0;
