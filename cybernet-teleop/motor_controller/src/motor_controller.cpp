@@ -1,13 +1,14 @@
-#include <motor_controller/motor_controller.h>
+#include "motor_controller/motor_controller.h"
 
-MotorController::MotorController(ros::Nodehandle nh) {
 
+MotorController::MotorController(ros::NodeHandle& nh) {
+	Vout_handles.resize(6);	
 	for(int itr = 0; itr < 6; itr++) PhidgetVoltageOutput_create(&Vout_handles[itr]);
 
-	for(int itr = 0; itr < 3; itr++) Phidget_setDeviceSerialNumber((PhidgetHandle)Vout_handles[i], device_1_sn);  
-	for(int itr = 3; itr < 6; itr++) Phidget_setDeviceSerialNumber((PhidgetHandle)Vout_handles[i], device_2_sn);
+	for(int itr = 0; itr < 3; itr++) Phidget_setDeviceSerialNumber((PhidgetHandle)Vout_handles[itr], device_1_sn);  
+	for(int itr = 3; itr < 6; itr++) Phidget_setDeviceSerialNumber((PhidgetHandle)Vout_handles[itr], device_2_sn);
 
-
+		ROS_INFO("HERE");
 	prc = Phidget_setChannel((PhidgetHandle)Vout_handles[0],0);
 	prc = Phidget_setChannel((PhidgetHandle)Vout_handles[1],1);
 	prc = Phidget_setChannel((PhidgetHandle)Vout_handles[2],2);
@@ -16,7 +17,7 @@ MotorController::MotorController(ros::Nodehandle nh) {
 	prc = Phidget_setChannel((PhidgetHandle)Vout_handles[5],2);
 
 	for(int itr = 0; itr < 6; itr++) {
-		prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout_handles[i], timeout);
+		prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout_handles[itr], timeout);
 		if(prc == 3) ROS_INFO("Motor %i timeout", itr);
 	}
 	
