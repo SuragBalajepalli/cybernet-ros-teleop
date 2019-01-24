@@ -1,0 +1,6 @@
+joint0: {mm_per_tick: 1.0}
+joint1: {mm_per_tick: 1.0}
+joint2: {mm_per_tick: 1.0}
+joint3: {mm_per_tick: 1.0}
+joint4: {mm_per_tick: 1.0}
+joint5: {mm_per_tick: 1.0}

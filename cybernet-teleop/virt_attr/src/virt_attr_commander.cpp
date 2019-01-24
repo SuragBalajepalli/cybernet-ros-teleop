@@ -6,8 +6,8 @@
 #include <cstdlib>
 #include <geometry_msgs/PoseStamped.h>
 #include <sensor_msgs/JointState.h>
-#include <test_pkg/virt_attr_zero.h>
-#include <test_pkg/toggle_reset.h>
+#include <virt_attr/virt_attr_zero.h>
+#include <virt_attr/toggle_reset.h>
 
 
 geometry_msgs::PoseStamped virt_attr_pose;
@@ -15,7 +15,7 @@ sensor_msgs::JointState prev_enc_vals;
 bool reset_mode = false, init = true; //For future use of moving the hand controller without changing vals
 double RATE = 100, JNT0_MM_PER_TICK = 1, JNT1_MM_PER_TICK = 1, JNT2_MM_PER_TICK = 1; // default in case param server is empty
 
-bool setZeroCb(test_pkg::virt_attr_zeroRequest& request, test_pkg::virt_attr_zeroResponse& response) {
+bool setZeroCb(virt_attr::virt_attr_zeroRequest& request, virt_attr::virt_attr_zeroResponse& response) {
 	//A call to this service sets the virtual attractor pose to origin
 	ROS_INFO("Command to set to zero recieved");
 	virt_attr_pose.pose.position.x = 0.0;
@@ -25,7 +25,7 @@ bool setZeroCb(test_pkg::virt_attr_zeroRequest& request, test_pkg::virt_attr_zer
 	return true;
 }
 
-bool resetToggleCb(test_pkg::toggle_resetRequest& request, test_pkg::toggle_resetResponse& response) {
+bool resetToggleCb(virt_attr::toggle_resetRequest& request, virt_attr::toggle_resetResponse& response) {
 	//A call to this service toggles between reset mode and normal mode. 
 	//By default, the system is in normal mode
 	//Reset mode is analogous to lifting your mouse off the table and moving it
@@ -41,31 +41,29 @@ bool resetToggleCb(test_pkg::toggle_resetRequest& request, test_pkg::toggle_rese
 		ROS_INFO("Currently in normal mode");
 		response.status = "Normal mode";
 	}
-	
+
 	return true;
 }
 
 
 void encoderCb(const sensor_msgs::JointState& encoder_vals) {
 	//On startup, it ensures that the virtual attractor is at origin. 
-	if(init) { //borderline spaghetti code; find another way to do this
-		prev_enc_vals.position.resize(3);
-		prev_enc_vals.position[0] = encoder_vals.position[0];
-		prev_enc_vals.position[1] = encoder_vals.position[1];
-		prev_enc_vals.position[2] = encoder_vals.position[2];
-		init = false;
-	}
-	else {
-		if(!reset_mode) { //In "reset mode", any movement in the joystick does not reflect on the end effector
-			virt_attr_pose.pose.position.x += (encoder_vals.position[0] - prev_enc_vals.position[0]) * JNT0_MM_PER_TICK;
-			virt_attr_pose.pose.position.y += (encoder_vals.position[1] - prev_enc_vals.position[1]) * JNT1_MM_PER_TICK;
-			virt_attr_pose.pose.position.z += (encoder_vals.position[2] - prev_enc_vals.position[2]) * JNT2_MM_PER_TICK;
-			}
-		prev_enc_vals.position[0] = encoder_vals.position[0];
-		prev_enc_vals.position[1] = encoder_vals.position[1];
-		prev_enc_vals.position[2] = encoder_vals.position[2];
-	}
+	//borderline spaghetti code; find another way to do this
+	if(!reset_mode && !init) { //In "reset mode", any movement in the joystick does not reflect on the end effector
+		virt_attr_pose.pose.position.x += (encoder_vals.position[0] - prev_enc_vals.position[0]) * JNT0_MM_PER_TICK;
+		virt_attr_pose.pose.position.y += (encoder_vals.position[1] - prev_enc_vals.position[1]) * JNT1_MM_PER_TICK;
+		virt_attr_pose.pose.position.z += (encoder_vals.position[2] - prev_enc_vals.position[2]) * JNT2_MM_PER_TICK;
+		}
+	prev_enc_vals.position.resize(6);
+	prev_enc_vals.position[0] = encoder_vals.position[0];
+	prev_enc_vals.position[1] = encoder_vals.position[1];
+	prev_enc_vals.position[2] = encoder_vals.position[2];
+	prev_enc_vals.position[3] = encoder_vals.position[3];
+	prev_enc_vals.position[4] = encoder_vals.position[4];
+	prev_enc_vals.position[5] = encoder_vals.position[5];
+	init = false; //Do not need this to be repeatedly set to false but no harm, really.
 }
+
 
 int main(int argc, char** argv) {
 	ros::init(argc,argv,"Virt_attr_test_3DOF");
