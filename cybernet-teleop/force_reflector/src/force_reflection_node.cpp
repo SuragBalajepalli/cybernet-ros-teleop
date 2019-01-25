@@ -2,6 +2,7 @@
 #include <geometry_msgs/WrenchStamped.h>
 #include <cstdlib>
 #include <libphidget22/phidget22.h>
+#include <motor_controller/motor_controller.h>
 
 
 double RATE = 100.0, JNT0_V_PER_N = 1.0, JNT1_V_PER_N = 1.0, JNT2_V_PER_N = 1.0,
@@ -29,23 +30,23 @@ int main (int argc, char** argv) {
 	}
 	else { ROS_INFO("Loaded value from param server: %f volts/newton", JNT0_V_PER_N);}
 	if(!nh.getParam("/joint1/v_per_n", JNT1_V_PER_N)) {
-		ROS_INFO("Setting default value for joint0 voltage per newton: %f", JNT1_V_PER_N);
+		ROS_INFO("Setting default value for joint1 voltage per newton: %f", JNT1_V_PER_N);
 	}
 	else { ROS_INFO("Loaded value from param server: %f volts/newton", JNT1_V_PER_N);}
 	if(!nh.getParam("/joint2/v_per_n", JNT2_V_PER_N)) {
-		ROS_INFO("Setting default value for joint0 voltage per newton: %f", JNT2_V_PER_N);
+		ROS_INFO("Setting default value for joint2 voltage per newton: %f", JNT2_V_PER_N);
 	}
 	else { ROS_INFO("Loaded value from param server: %f volts/newton", JNT2_V_PER_N);}
 	if(!nh.getParam("/joint3/v_per_n", JNT3_V_PER_NM)) {
-		ROS_INFO("Setting default value for joint0 voltage per newton: %f", JNT3_V_PER_NM);
+		ROS_INFO("Setting default value for joint3 voltage per newton: %f", JNT3_V_PER_NM);
 	}
 	else { ROS_INFO("Loaded value from param server: %f volts/newton", JNT3_V_PER_NM);}
 	if(!nh.getParam("/joint4/v_per_n", JNT4_V_PER_NM)) {
-		ROS_INFO("Setting default value for joint0 voltage per newton: %f", JNT4_V_PER_NM);
+		ROS_INFO("Setting default value for joint4 voltage per newton: %f", JNT4_V_PER_NM);
 	}
 	else { ROS_INFO("Loaded value from param server: %f volts/newton", JNT4_V_PER_NM);}
 	if(!nh.getParam("/joint5/v_per_n", JNT5_V_PER_NM)) {
-		ROS_INFO("Setting default value for joint0 voltage per newton: %f", JNT5_V_PER_NM);
+		ROS_INFO("Setting default value for joint5 voltage per newton: %f", JNT5_V_PER_NM);
 	}
 	else { ROS_INFO("Loaded value from param server: %f volts/newton", JNT5_V_PER_NM);}
 	if(!nh.getParam("/rate", RATE)) {
@@ -66,12 +67,12 @@ int main (int argc, char** argv) {
 	prc = Phidget_setChannel((PhidgetHandle)Vout0_handle_,0);
 	prc = Phidget_setChannel((PhidgetHandle)Vout1_handle_,1);
 	prc = Phidget_setChannel((PhidgetHandle)Vout2_handle_,2);
-	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout0_handle_, 5000);
-	std::cout<<"Return code on attachment"<<prc<<std::endl;
-	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout1_handle_, 5000);
-	std::cout<<"Return code on attachment"<<prc<<std::endl;
-	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout2_handle_, 5000);
-	std::cout<<"Return code on attachment"<<prc<<std::endl;
+	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout0_handle_, 10000);
+	std::cout<<"Return code on attachment motor 1: "<<prc<<std::endl;
+	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout1_handle_, 10000);
+	std::cout<<"Return code on attachment motor 2:"<<prc<<std::endl;
+	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout2_handle_, 10000);
+	std::cout<<"Return code on attachment motor 3: "<<prc<<std::endl;
 
 	//ALL OF THIS NEEDS TO BE IN A CONSTRUCTOR IN A CLASS. TODO
 

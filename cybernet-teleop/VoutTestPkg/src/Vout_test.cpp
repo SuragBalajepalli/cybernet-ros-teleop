@@ -16,7 +16,8 @@ int main(int argc, char** argv) {
 	prc = PhidgetVoltageOutput_create(&Vout_handle_);
 	std::cout<<"Return code on creation"<<prc<<std::endl;
 	prc = Phidget_setDeviceSerialNumber((PhidgetHandle)Vout_handle_, 525557);
-	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout_handle_, 5000);
+	prc = Phidget_setChannel((PhidgetHandle)Vout_handle_,1);
+	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout_handle_, 15000);
 	std::cout<<"Return code on attachment"<<prc<<std::endl;
 	std_msgs::Float32 val;
 	

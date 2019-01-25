@@ -10,7 +10,7 @@
 class MotorController {
 public:
 	
-	MotorController(ros::NodeHandle& nh);
+	MotorController();
 	~MotorController();
 	//main function to be used:
 	bool setVoltage(int motor_index,double voltage);

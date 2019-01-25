@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   geometry_msgs
   message_generation
+  motor_controller
 )
 
 ## System dependencies are found with CMake's conventions
@@ -106,7 +107,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES test_pkg
+  LIBRARIES force_reflector
   CATKIN_DEPENDS libphidget22 roscpp geometry_msgs message_runtime
   DEPENDS system_lib
 )
@@ -120,17 +121,19 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/test_pkg.cpp
-# )
+add_library(force_reflector
+   src/force_reflector.cpp
+ )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-#add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} #${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(force_reflector motor_controller libphidget22)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -147,13 +150,18 @@ add_executable(force_reflection_node src/force_reflection_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} #${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 
 
 target_link_libraries(force_reflection_node 
    ${catkin_LIBRARIES}
+ )
+
+ target_link_libraries(force_reflector
+ ${catkin_LIBRARIES}
+ motor_controller
  )
 
 #############

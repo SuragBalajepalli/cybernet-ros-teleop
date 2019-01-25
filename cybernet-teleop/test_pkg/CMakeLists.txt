@@ -138,6 +138,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/test_pkg_node.cpp)
 add_executable(virt_attr_test src/virt_attr_test.cpp)
 add_executable(force_reflection_test src/force_reflection_test.cpp)
+add_executable(spring_like_test src/spring_like_test.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -157,6 +158,8 @@ target_link_libraries(virt_attr_test
 target_link_libraries(force_reflection_test 
    ${catkin_LIBRARIES}
  )
+ target_link_libraries(spring_like_test
+ ${catkin_LIBRARIES})
 
 #############
 ## Install ##

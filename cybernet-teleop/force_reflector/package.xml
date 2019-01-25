@@ -53,13 +53,16 @@
   <build_depend>roscpp</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>message_generation</build_depend>
+  <build_depend>motor_controller</build_depend>
   <build_export_depend>libphidget22</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
+  <build_export_depend>motor_controller</build_export_depend>
   <exec_depend>libphidget22</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>message_runtime</exec_depend>
+  <exec_depend>motor_controller</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
