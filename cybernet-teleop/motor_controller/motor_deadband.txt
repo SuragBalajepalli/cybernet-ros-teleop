@@ -1,0 +1,15 @@
+Motor 1: +ve:
+5 trials: 0.125, 0.135, 0.125, 0.130, 0.135 Mean = 0.130
+-ve:
+5 trials = 0.065, 0.095, 0.11, 0.12, 0.115
+5 more: 0.120, 0.125, 0.125, 0.125 mean = -0.125 
+
+Motor 2: +ve:
+5 trials: 0.25, 0.26, 0.26, 0.255, 0.26 mean = 0.26
+-ve:
+5 trials: -0.235, -0.27, -0.255,  -0.255, -0.25 mean = -0.25
+
+Motor 3: +ve:
+5 trials: 0.095, 0.095, 0.095, 0.09, 0.095 mean = 0.095
+-ve:
+5 trials: -0.06, -0.065, -0.085, -0.095, -0.155 -> values cannot be trusted because this motion is towards gravity, slight increase in voltage is enough to overcome static friction in the transmission and move the robot by a lot. consider -0.1V

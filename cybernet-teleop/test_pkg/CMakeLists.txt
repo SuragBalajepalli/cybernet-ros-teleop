@@ -139,7 +139,7 @@ include_directories(
 add_executable(virt_attr_test src/virt_attr_test.cpp)
 add_executable(force_reflection_test src/force_reflection_test.cpp)
 add_executable(spring_like_test src/spring_like_test.cpp)
-
+add_executable(deadband_measurement src/deadband_measurement.cpp)
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -159,6 +159,8 @@ target_link_libraries(force_reflection_test
    ${catkin_LIBRARIES}
  )
  target_link_libraries(spring_like_test
+ ${catkin_LIBRARIES})
+target_link_libraries(deadband_measurement
  ${catkin_LIBRARIES})
 
 #############
