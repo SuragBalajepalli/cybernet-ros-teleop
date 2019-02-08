@@ -7,16 +7,20 @@ project(test_pkg)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
+find_package(catkin REQUIRED COMPONENTS cmake_modules
   libphidget22
   roscpp
   geometry_msgs
   message_generation
+
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(cmake_modules REQUIRED)
+find_package(Eigen REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
+add_definitions(${EIGEN_DEFINITIONS})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -105,6 +109,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
+	
   INCLUDE_DIRS include
   LIBRARIES test_pkg
   CATKIN_DEPENDS libphidget22 roscpp geometry_msgs message_runtime
@@ -120,7 +125,10 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+
+
 )
+add_definitions(${EIGEN_DEFINITIONS})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
