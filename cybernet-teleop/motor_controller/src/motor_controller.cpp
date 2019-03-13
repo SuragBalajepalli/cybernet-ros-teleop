@@ -22,7 +22,7 @@ MotorController::MotorController() {
 	}
 	
 }
-//Make copy constructor with arguments for number of motors, serial numbers, channels
+//Make constructor with arguments for number of motors, serial numbers, channels
 
 MotorController::~MotorController() {
 

@@ -12,19 +12,19 @@ double RATE = 100.0, JNT0_V_PER_N = 1.0, JNT1_V_PER_N = 1.0, JNT2_V_PER_N = 1.0,
 		JNT4_MIN = -2.0, JNT4_MAX = 2.0, JNT5_MIN = -2.0, JNT5_MAX = 2.0;
 std::vector<double> voltages(6);
 
-void forceCb(const geometry_msgs::WrenchStamped& wrench) {
-	voltages[0] = wrench.wrench.force.x * JNT0_V_PER_N;
-	voltages[1] = wrench.wrench.force.y * JNT1_V_PER_N;
-	voltages[2] = wrench.wrench.force.z * JNT2_V_PER_N;
-	voltages[3] = wrench.wrench.torque.x * JNT3_V_PER_NM;
-	voltages[4] = wrench.wrench.torque.y * JNT4_V_PER_NM;
-	voltages[5] = wrench.wrench.torque.z * JNT5_V_PER_NM;
+void forceCb(const geometry_msgs::Wrench& wrench) {
+	voltages[0] =  ((wrench.force.y + 0.6463) / 0.507)/50;
+	voltages[1] =  -1 * ((wrench.force.z + 0.6536) / 0.4776)/50;
+	voltages[2] = -1 * ((wrench.force.x + 0.65) / 0.5)/50;
+	voltages[3] = wrench.torque.x * JNT3_V_PER_NM;
+	voltages[4] = wrench.torque.y * JNT4_V_PER_NM;
+	voltages[5] = wrench.torque.z * JNT5_V_PER_NM;
 }
 
 int main (int argc, char** argv) {
-	ros::init(argc,argv,"force_reflection_test");
+	ros::init(argc,argv,"force_reflection_node");
 	ros::NodeHandle nh;
-	ros::Subscriber force_sub = nh.subscribe("/test_force_torque_sensor",1,forceCb);
+	ros::Subscriber force_sub = nh.subscribe("/transformed_ft_wrench",1,forceCb);
 	if(!nh.getParam("/joint0/v_per_n", JNT0_V_PER_N)) {
 		ROS_INFO("Setting default value for joint0 voltage per newton: %f", JNT0_V_PER_N);
 	}

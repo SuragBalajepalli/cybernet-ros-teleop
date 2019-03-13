@@ -70,7 +70,7 @@ void ang_encCb(const sensor_msgs::JointState& encoder_vals_ang) {
 	else {
 		//construct rotation matrix from change in angles
 		//assuming a start from 0
-			theta_z = (encoder_vals_ang.position[0] - prev_enc_vals.position[3]) * JNT6_RAD_PER_TICK;
+			theta_z = (encoder_vals_ang.position[0] - prev_enc_vals.position[3]) * JNT4_RAD_PER_TICK;
 			theta_y = (encoder_vals_ang.position[1] - prev_enc_vals.position[4]) * -JNT5_RAD_PER_TICK;
 			theta_x = (encoder_vals_ang.position[2] - prev_enc_vals.position[5]) * JNT6_RAD_PER_TICK;
 			Eigen::Matrix3d rot_mat_change, rot_z, rot_y, rot_x;

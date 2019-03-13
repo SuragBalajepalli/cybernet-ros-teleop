@@ -12,9 +12,9 @@ double RATE = 100.0, JNT0_V_PER_N = 1.0, JNT1_V_PER_N = 1.0, JNT2_V_PER_N = 1.0,
 std::vector<double> voltages(6);
 
 void forceCb(const geometry_msgs::WrenchStamped& wrench) {
-	voltages[0] = wrench.wrench.force.x * JNT0_V_PER_N;
-	voltages[1] = wrench.wrench.force.y * JNT1_V_PER_N;
-	voltages[2] = wrench.wrench.force.z * JNT2_V_PER_N;
+	voltages[0] = (wrench.wrench.force.x + 0.6536) / 0.4776;
+	voltages[1] = (wrench.wrench.force.y + 0.6463) / 0.507;
+	voltages[2] = (wrench.wrench.force.z + 0.052) / 12.7747;
 	voltages[3] = wrench.wrench.torque.x * JNT3_V_PER_NM;
 	voltages[4] = wrench.wrench.torque.y * JNT4_V_PER_NM;
 	voltages[5] = wrench.wrench.torque.z * JNT5_V_PER_NM;
