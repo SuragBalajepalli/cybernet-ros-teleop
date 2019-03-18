@@ -1,7 +1,7 @@
 Make all these a launch file:
 
-rosrun phidgets_high_speed_encoder phidgets_high_speed_encoder joint_states:=joint_states_angular _serial_number:=528198
+rosrun phidgets_high_speed_encoder phidgets_high_speed_encoder joint_states:=joint_states_angular _serial_number:=528198 __name:=ang_enc
 
-rosrun phidgets_high_speed_encoder phidgets_high_speedncoder joint_states:=joint_states_linear _serial_number:=528413
+rosrun phidgets_high_speed_encoder phidgets_high_speed_encoder joint_states:=joint_states_linear _serial_number:=528413 __name:=lin_enc
 
 virt_attr virt_attr_commander
