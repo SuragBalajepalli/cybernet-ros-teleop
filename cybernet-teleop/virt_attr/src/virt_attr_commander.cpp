@@ -108,6 +108,7 @@ void angular_encoderCb(const sensor_msgs::JointState& encoder_vals_ang) {
 			rot_mat = rot_mat * rot_mat_change;
 			//Eigen's quaternion conversion is fast
 			Eigen::Quaterniond quat(rot_mat);
+			quat.normalize();
 			virt_attr_pose.pose.orientation.w = quat.w();
 			virt_attr_pose.pose.orientation.x = quat.x();
 			virt_attr_pose.pose.orientation.y = quat.y();

@@ -6,19 +6,19 @@
 
 
 double RATE = 100.0, JNT0_V_PER_N = 1.0, JNT1_V_PER_N = 1.0, JNT2_V_PER_N = 1.0,
-		JNT3_V_PER_NM = 1.0, JNT4_V_PER_NM = 1.0, JNT5_V_PER_NM = 1.0,
+		JNT3_V_PER_NM = 1, JNT4_V_PER_NM = 0.1, JNT5_V_PER_NM = 0.1,
 		JNT0_MIN = -2.0, JNT0_MAX = 2.0, JNT1_MIN = -2.0, JNT1_MAX = 2.0,
 		JNT2_MIN = -2.0, JNT2_MAX = 2.0, JNT3_MIN = -2.0, JNT3_MAX = 2.0,
 		JNT4_MIN = -2.0, JNT4_MAX = 2.0, JNT5_MIN = -2.0, JNT5_MAX = 2.0;
 std::vector<double> voltages(6);
 
-void forceCb(const geometry_msgs::Wrench& wrench) {
+void forceCb(const geometry_msgs::Wrench& wrench) { //use transformation here 
 	voltages[0] =  ((wrench.force.y + 0.6463) / 0.507)/50;
 	voltages[1] =  -1 * ((wrench.force.z + 0.6536) / 0.4776)/50;
 	voltages[2] = -1 * ((wrench.force.x + 0.65) / 0.5)/50;
-	voltages[3] = wrench.torque.x * JNT3_V_PER_NM;
-	voltages[4] = wrench.torque.y * JNT4_V_PER_NM;
-	voltages[5] = wrench.torque.z * JNT5_V_PER_NM;
+	voltages[3] = - 1 * wrench.torque.x * JNT3_V_PER_NM;
+	voltages[4] = -1 * wrench.torque.z * JNT4_V_PER_NM;
+	voltages[5] = -1 * wrench.torque.y * JNT5_V_PER_NM;
 }
 
 int main (int argc, char** argv) {
@@ -55,25 +55,29 @@ int main (int argc, char** argv) {
 	else {ROS_INFO("Rate set from param sever %f", RATE);}
 	
 
-	PhidgetVoltageOutputHandle Vout0_handle_, Vout1_handle_, Vout2_handle_;
+	PhidgetVoltageOutputHandle Vout0_handle_, Vout1_handle_, Vout2_handle_, Vout3_handle_, Vout4_handle_, Vout5_handle_;
 	
 	PhidgetReturnCode prc; //Dont need this, todo.
 	prc = PhidgetVoltageOutput_create(&Vout0_handle_);
 	prc = PhidgetVoltageOutput_create(&Vout1_handle_);
 	prc = PhidgetVoltageOutput_create(&Vout2_handle_);
+	prc = PhidgetVoltageOutput_create(&Vout3_handle_);
 	prc = Phidget_setDeviceSerialNumber((PhidgetHandle)Vout0_handle_, 525557);
 	prc = Phidget_setDeviceSerialNumber((PhidgetHandle)Vout1_handle_, 525557);
 	prc = Phidget_setDeviceSerialNumber((PhidgetHandle)Vout2_handle_, 525557);
+	prc = Phidget_setDeviceSerialNumber((PhidgetHandle)Vout3_handle_, 525557);
 	prc = Phidget_setChannel((PhidgetHandle)Vout0_handle_,0);
 	prc = Phidget_setChannel((PhidgetHandle)Vout1_handle_,1);
 	prc = Phidget_setChannel((PhidgetHandle)Vout2_handle_,2);
-	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout0_handle_, 10000);
+	prc = Phidget_setChannel((PhidgetHandle)Vout3_handle_,3);
+	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout0_handle_, 5000);
 	std::cout<<"Return code on attachment motor 1: "<<prc<<std::endl;
-	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout1_handle_, 10000);
+	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout1_handle_, 5000);
 	std::cout<<"Return code on attachment motor 2:"<<prc<<std::endl;
-	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout2_handle_, 10000);
+	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout2_handle_, 5000);
 	std::cout<<"Return code on attachment motor 3: "<<prc<<std::endl;
-
+	prc = Phidget_openWaitForAttachment((PhidgetHandle)Vout3_handle_, 5000);
+	std::cout<<"Return code on attachment motor 4: "<<prc<<std::endl;
 	//ALL OF THIS NEEDS TO BE IN A CONSTRUCTOR IN A CLASS. TODO
 
 
@@ -84,9 +88,14 @@ int main (int argc, char** argv) {
 		//ROS_INFO("Setting voltage of %f at J_0", voltages[0]);
 		prc = PhidgetVoltageOutput_setVoltage(Vout1_handle_,voltages[1]);
 		prc = PhidgetVoltageOutput_setVoltage(Vout2_handle_,voltages[2]);
+		prc = PhidgetVoltageOutput_setVoltage(Vout3_handle_,voltages[3]);
 		naptime.sleep();
 	}
 	//DESTRUCTOR STUFF. TODO
+	prc = PhidgetVoltageOutput_setVoltage(Vout0_handle_,0.0);
+	prc = PhidgetVoltageOutput_setVoltage(Vout1_handle_,0.0);
+	prc = PhidgetVoltageOutput_setVoltage(Vout2_handle_,0.0);
+	prc = PhidgetVoltageOutput_setVoltage(Vout3_handle_,0.0);
 	prc = Phidget_close((PhidgetHandle)Vout0_handle_);
 	prc = Phidget_close((PhidgetHandle)Vout1_handle_);
 	prc = Phidget_close((PhidgetHandle)Vout2_handle_);
