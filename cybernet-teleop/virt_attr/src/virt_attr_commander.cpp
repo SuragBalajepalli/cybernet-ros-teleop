@@ -19,7 +19,7 @@ Eigen::Matrix3d rot_mat = Eigen::Matrix3d::Identity();
 
 sensor_msgs::JointState prev_enc_vals;
 bool reset_mode = false, init = true; //For future use of moving the hand controller without changing vals
-double RATE = 100, JNT0_M_PER_TICK = 0.0000762/2, JNT1_M_PER_TICK = 0.0000762/2, JNT2_M_PER_TICK = 0.0000762/2; // default in case param server is empty
+double RATE = 1000, JNT0_M_PER_TICK = 0.0000762/2, JNT1_M_PER_TICK = 0.0000762/2, JNT2_M_PER_TICK = 0.0000762/2; // default in case param server is empty
 double JNT4_RAD_PER_TICK = 0.00019, JNT5_RAD_PER_TICK = 0.00019, JNT6_RAD_PER_TICK = 0.00019; 
 bool setZeroCb(virt_attr::virt_attr_zeroRequest& request, virt_attr::virt_attr_zeroResponse& response) {
 	//A call to this service sets the virtual attractor pose to origin
